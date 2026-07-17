@@ -93,7 +93,11 @@ namespace Webshop.Controllers
         [HttpGet("me")]
         public ActionResult Me()
         {
-            return Ok(new { userName = User.Identity?.Name });
+            return Ok(new
+            {
+                userName = User.Identity?.Name,
+                isAdmin = User.IsInRole("Admin")
+            });
         }
     }
 }

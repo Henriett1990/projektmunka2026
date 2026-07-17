@@ -116,3 +116,13 @@ p{
 .meretezes{
     width: 1000;
 }
+
+.kosar-tablazat td {
+    font-size: 120%;
+    font-style: normal;
+}
+
+.kosar-cim {
+    font-size: 1.5rem;
+    padding: 20px 5px 10px;
+}
