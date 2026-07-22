@@ -22,35 +22,71 @@ async function loadTermekek() {
 
 let termekekCacheFrontend = [];
 
+function rovidLeiras(szoveg, maxHossz) {
+  if (szoveg.length <= maxHossz) return szoveg;
+  return szoveg.substring(0, maxHossz).trim() + "...";
+}
+
 function renderTermekek(termekek) {
   termekekCacheFrontend = termekek;
   const container = document.getElementById("termekek-lista");
+  container.className = "termek-kartyak";
   container.innerHTML = "";
 
-  termekek.forEach((termek, index) => {
+  termekek.forEach(termek => {
+    const kepUrl = termek.image ? encodeURI(termek.image) : "";
     const kep = termek.image
-      ? `<img class="responsive img-thumbnail kicsinyites kozepre" src="${encodeURI(termek.image)}" alt="${termek.name}">`
+      ? `<div class="termek-kep-wrapper" style="background-image: url('${kepUrl}');">
+           <img src="${kepUrl}" alt="${termek.name}">
+         </div>`
       : "";
 
-    const row = document.createElement("div");
-    row.className = "row";
-    row.innerHTML = `
-      <div class="col-lg-4 col-sm-12">
-        ${kep}
-      </div>
-      <div class="col-lg-8 col-sm-12">
-        <p class="felkover nagyobbbetu">${index + 1}. ${termek.name}</p>
-        <br>
-        <p>${termek.description}</p>
-        <p><span class="felkover">Ára: ${termek.price} Ft/${termek.unit}</span> (Az ár az ÁFÁ-t tartalmazza.)</p>
-        <button class="btn btn-warning" onclick="kosarhozAd(termekekCacheFrontend.find(t => t.id === ${termek.id}))">Kosárba</button>
-        <br><br><br>
+    const kartya = document.createElement("div");
+    kartya.className = "termek-kartya";
+    kartya.style.cursor = "pointer";
+    kartya.onclick = () => termekReszletMutat(termek.id);
+    kartya.innerHTML = `
+      ${kep}
+      <div class="termek-kartya-tartalom">
+        <h3>${termek.name}</h3>
+        <p>${rovidLeiras(termek.description, 150)}</p>
+        <p class="termek-kartya-ar">${termek.price} Ft/${termek.unit}</p>
+        <button class="btn-kosarba" onclick="event.stopPropagation(); kosarhozAd(termekekCacheFrontend.find(t => t.id === ${termek.id}))">Kosárba</button>
       </div>
     `;
 
-    container.appendChild(row);
+    container.appendChild(kartya);
   });
 }
 
+function termekReszletMutat(id) {
+  const termek = termekekCacheFrontend.find(t => t.id === id);
+  if (!termek) return;
+
+  const box = document.getElementById("termek-reszletek");
+  const kepUrl = termek.image ? encodeURI(termek.image) : "";
+  const kep = termek.image ? `<img src="${kepUrl}" alt="${termek.name}">` : "";
+
+  box.innerHTML = `
+  ${kep}
+  <div class="termek-reszletek-tartalom">
+    <div class="termek-reszletek-header">
+      <h2>${termek.name}</h2>
+      <button class="termek-reszletek-bezar" onclick="termekReszletBezar()">&times;</button>
+    </div>
+    <p class="termek-reszletek-leiras">${termek.description}</p>
+    <p class="termek-reszletek-ar">Ár: ${termek.price} Ft</p>
+    <p class="termek-reszletek-kiszereles">Kiszerelés: ${termek.unit}</p>
+    <button class="btn-kosarba" onclick="kosarhozAd(termekekCacheFrontend.find(t => t.id === ${termek.id}))">Kosárba</button>
+  </div>
+`;
+
+  box.style.display = "flex";
+  box.scrollIntoView({ behavior: "smooth", block: "start" });
+}
+
+function termekReszletBezar() {
+  document.getElementById("termek-reszletek").style.display = "none";
+}
 
 document.addEventListener("DOMContentLoaded", loadTermekek);

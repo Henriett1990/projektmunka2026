@@ -66,7 +66,7 @@ function mutasdToaster(uzenet) {
     toaster.style.position = "fixed";
     toaster.style.bottom = "20px";
     toaster.style.right = "20px";
-    toaster.style.backgroundColor = "#e0e0e0";
+    toaster.style.backgroundColor = "rgba(255, 255, 255, 0.9)";
     toaster.style.color = "#333";
     toaster.style.fontWeight = "bold";
     toaster.style.height = "24px";
