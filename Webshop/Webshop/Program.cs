@@ -1,5 +1,6 @@
-using Scalar.AspNetCore;
 using Microsoft.AspNetCore.Authentication.Cookies;
+using Scalar.AspNetCore;
+using Webshop;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -25,6 +26,7 @@ builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationSc
     });
 
 builder.Services.AddAuthorization();
+builder.Services.AddScoped<EmailService>();
 
 builder.Services.AddCors(options =>
 {

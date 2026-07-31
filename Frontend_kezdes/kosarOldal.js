@@ -21,8 +21,46 @@ function renderKosarTabla() {
   document.getElementById("kosar-vegosszeg").textContent = kosarOsszesen();
 }
 
-function rendelesLeadasa() {
-  document.getElementById("rendeles-uzenet").textContent = "Ez a funkció hamarosan elérhető lesz (email küldés).";
+
+async function rendelesLeadasa() {
+  const kosar = getKosar();
+  const uzenet = document.getElementById("rendeles-uzenet");
+
+  if (kosar.length === 0) {
+    uzenet.textContent = "A kosarad üres.";
+    return;
+  }
+
+  const items = kosar.map(t => ({
+    id: t.id,
+    name: t.name,
+    price: t.price,
+    quantity: t.mennyiseg
+  }));
+
+  try {
+    const response = await fetch("https://localhost:7249/Order", {
+      method: "POST",
+      credentials: "include",
+      headers: {
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify({ items })
+    });
+
+    if (response.ok) {
+      localStorage.removeItem("kosar");
+      uzenet.textContent = "Rendelésed sikeresen leadva! Köszönjük!";
+      renderKosarTabla();
+    } else if (response.status === 401) {
+      uzenet.textContent = "A rendeléshez be kell jelentkezned.";
+    } else {
+      uzenet.textContent = "Hiba történt a rendelés leadásakor.";
+    }
+  } catch (err) {
+    uzenet.textContent = "Nem sikerült kapcsolódni a szerverhez.";
+  }
 }
+
 
 document.addEventListener("DOMContentLoaded", renderKosarTabla);
