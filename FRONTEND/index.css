@@ -180,6 +180,7 @@ p{
     font-size: 1.2rem;
     margin-bottom: 10px;
     color: #6b4f3a;
+    min-height: 3.9em;
 }
 
 .termek-kartya-tartalom p {
@@ -188,6 +189,10 @@ p{
     flex-grow: 1;
     text-align: center;
     text-indent: 0;
+}
+
+.termek-kartya-leiras {
+    min-height: 6em;
 }
 
 .termek-kartya-ar {
