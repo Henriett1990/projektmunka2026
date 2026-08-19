@@ -13,7 +13,7 @@ function renderKosarTabla() {
           onchange="mennyisegModosit(${termek.id}, parseInt(this.value)); renderKosarTabla();">
       </td>
       <td>${termek.price * termek.mennyiseg} Ft</td>
-      <td><button class="btn btn-sm btn-danger" onclick="kosarbolTorol(${termek.id}); renderKosarTabla();">Törlés</button></td>
+      <td><button class="kosar-torles-gomb" onclick="kosarbolTorol(${termek.id}); renderKosarTabla();">Törlés</button></td>
     `;
     tbody.appendChild(tr);
   });

@@ -1,7 +1,10 @@
+@import url('https://fonts.googleapis.com/css2?family=Quicksand:wght@700&family=Poppins:wght@400;500;600&display=swap');
+
 body{
-    width: 80%;
-    margin: 20px auto;
-    background-color: antiquewhite;
+    width: 100%;
+    margin: 0;
+    background-color: #fdf1e8;
+    font-family: 'Poppins', sans-serif;
 }
 
 h1{
@@ -117,15 +120,69 @@ p{
     width: 1000;
 }
 
+.kosar-tablazat {
+    border-collapse: separate;
+    border-spacing: 0;
+    width: 100%;
+    background-color: #fff8f2;
+    border-radius: 16px;
+    overflow: hidden;
+    box-shadow: 0 4px 16px rgba(0,0,0,0.08);
+}
+
 .kosar-tablazat td {
-    font-size: 120%;
+    font-size: 100%;
     font-style: normal;
+    padding: 16px;
+    border-top: 1px solid #f5e3d3;
+    vertical-align: middle;
+}
+
+.kosar-tablazat thead {
+    background-color: #f0b98a;
+}
+
+.kosar-tablazat tbody {
+    background-color: #fff8f2;
+}
+
+.kosar-tablazat th {
+    padding: 16px;
+    text-align: left;
+    color: #7a4a2e;
+    border: none;
+}
+
+.kosar-tablazat tbody tr:hover {
+    background-color: #fdf1e8;
+}
+
+.kosar-tablazat input[type="number"] {
+    border: 1px solid #e0955f;
+    border-radius: 6px;
+    padding: 6px;
+    width: 60px;
 }
 
 .kosar-cim {
     font-size: 1.5rem;
     padding: 20px 5px 10px;
 }
+
+.kosar-torles-gomb {
+    background-color: #a68a7a;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    padding: 8px 16px;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+.kosar-torles-gomb:hover {
+    background-color: #8a7060;
+}
+
 .termek-kartyak {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
@@ -134,7 +191,7 @@ p{
 }
 
 .termek-kartya {
-    background-color: #fdf6ee;
+    background-color: #fff8f2;
     border-radius: 16px;
     overflow: hidden;
     box-shadow: 0 4px 16px rgba(0,0,0,0.08);
@@ -179,8 +236,9 @@ p{
 .termek-kartya-tartalom h3 {
     font-size: 1.2rem;
     margin-bottom: 10px;
-    color: #6b4f3a;
+    color: #7a4a2e;
     min-height: 3.9em;
+    letter-spacing: normal;
 }
 
 .termek-kartya-tartalom p {
@@ -197,12 +255,13 @@ p{
 
 .termek-kartya-ar {
     font-weight: bold;
-    color: #8c6a4f;
+    color: #d97a4a;
     margin: 10px 0;
+    text-indent: 0;
 }
 
 .btn-kosarba {
-    background-color: #c9a27e;
+    background-color: #e07a4f;
     color: white;
     border: none;
     border-radius: 8px;
@@ -212,8 +271,9 @@ p{
 }
 
 .btn-kosarba:hover {
-    background-color: #b08c68;
+    background-color: #c85a30;
 }
+
 
 .termek-reszletek-box {
     background-color: #fdf6ee;
@@ -284,5 +344,47 @@ p{
 }
 
 .nav-hullamos {
-    background: linear-gradient(90deg, #f0e0c8, #d9b98a, #c9a27e, #d9b98a, #f0e0c8);
+    background: linear-gradient(90deg, #fbe0cc, #f0b98a, #e0955f, #f0b98a, #fbe0cc);
+}
+
+.navbar-nav .nav-link {
+    padding-left: 8px;
+    padding-right: 8px;
+}
+
+.navbar-nav {
+    width: 100%;
+    justify-content: center;
+    flex-wrap: wrap;
+}
+
+@media (min-width: 1200px) {
+    .navbar-nav {
+        gap: 40px;
+    }
+}
+
+#kepek {
+    padding-left: 0;
+    padding-right: 0;
+}
+
+.tartalom-konteiner {
+    max-width: 1200px;
+    margin: 20px auto;
+    padding: 0 20px;
+}
+
+h1, h2, h3, h4, h5 {
+    font-family: 'Quicksand', sans-serif;
+    font-weight: 700;
+}
+
+button {
+    font-family: 'Poppins', sans-serif;
+}
+
+.navbar-nav .nav-link {
+    font-family: 'Poppins', sans-serif;
+    font-weight: 500;
 }
