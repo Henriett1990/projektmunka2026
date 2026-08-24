@@ -77,8 +77,15 @@ namespace Webshop.Controllers
                 }
 
                 var adminEmail = _config["EmailSettings:AdminEmail"];
-                var adminBody = $"Új rendelés érkezett (#{orderId}), felhasználó ID: {userId}\n\n{itemsList}\n\nVégösszeg: {totalPrice} Ft";
+                var masodikEmail = _config["EmailSettings:MasodikEmail"];
+                var adminBody = $"Új rendelés érkezett (#{orderId})\nFelhasználó ID: {userId}\nVásárló email: {userEmail}\n\n{itemsList}\n\nVégösszeg: {totalPrice} Ft";
+
                 await _emailService.SendEmailAsync(adminEmail, "Új rendelés érkezett", adminBody);
+
+                if (!string.IsNullOrEmpty(masodikEmail))
+                {
+                    await _emailService.SendEmailAsync(masodikEmail, "Új rendelés érkezett", adminBody);
+                }
 
                 return StatusCode(201, new { message = "Rendelés sikeresen leadva!", orderId });
             }

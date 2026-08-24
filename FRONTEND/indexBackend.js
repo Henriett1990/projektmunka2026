@@ -13,6 +13,12 @@ async function loadTermekek() {
 
     const termekek = await response.json();
     renderTermekek(termekek);
+
+    const urlParameterek = new URLSearchParams(window.location.search);
+    const kivalasztottId = urlParameterek.get("termek");
+    if (kivalasztottId) {
+      termekReszletMutat(parseInt(kivalasztottId));
+    }
   } catch (error) {
     console.error(error);
     document.getElementById("termekek-lista").innerHTML =
@@ -49,7 +55,7 @@ function renderTermekek(termekek) {
       ${kep}
       <div class="termek-kartya-tartalom">
         <h3>${termek.name}</h3>
-        <p>${rovidLeiras(termek.description, 150)}</p>
+        <p class="termek-kartya-leiras">${rovidLeiras(termek.description, 150)}</p>
         <p class="termek-kartya-ar">${termek.price} Ft/${termek.unit}</p>
         <button class="btn-kosarba" onclick="event.stopPropagation(); kosarhozAd(termekekCacheFrontend.find(t => t.id === ${termek.id}))">Kosárba</button>
       </div>
