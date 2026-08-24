@@ -21,7 +21,6 @@ function renderKosarTabla() {
   document.getElementById("kosar-vegosszeg").textContent = kosarOsszesen();
 }
 
-
 async function rendelesLeadasa() {
   const kosar = getKosar();
   const uzenet = document.getElementById("rendeles-uzenet");
@@ -50,10 +49,13 @@ async function rendelesLeadasa() {
 
     if (response.ok) {
       localStorage.removeItem("kosar");
-      uzenet.textContent = "Rendelésed sikeresen leadva! Köszönjük!";
-      renderKosarTabla();
+      frissitKosarSzamlalo();
+      document.getElementById("kosar-tartalom").style.display = "none";
+      document.getElementById("rendeles-sikeres").style.display = "block";
     } else if (response.status === 401) {
       uzenet.textContent = "A rendeléshez be kell jelentkezned.";
+      document.getElementById("rendeles-gomb").style.display = "none";
+      document.getElementById("bejelentkezes-gomb").style.display = "inline-block";
     } else {
       uzenet.textContent = "Hiba történt a rendelés leadásakor.";
     }
@@ -62,5 +64,37 @@ async function rendelesLeadasa() {
   }
 }
 
+function mutasdKosarBejelentkezes() {
+  document.getElementById("kosar-bejelentkezes").style.display = "block";
+}
+
+async function kosarBejelentkezes() {
+  const email = document.getElementById("kosar-login-email").value;
+  const password = document.getElementById("kosar-login-password").value;
+  const hibaElem = document.getElementById("kosar-login-hiba");
+
+  try {
+    const response = await fetch("https://localhost:7249/Auth/login", {
+      method: "POST",
+      credentials: "include",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ email, password })
+    });
+
+    if (!response.ok) {
+      hibaElem.textContent = "Hibás email vagy jelszó.";
+      return;
+    }
+
+    document.getElementById("kosar-bejelentkezes").style.display = "none";
+    document.getElementById("bejelentkezes-gomb").style.display = "none";
+    document.getElementById("rendeles-gomb").style.display = "inline-block";
+    document.getElementById("rendeles-uzenet").textContent = "Sikeres bejelentkezés! Most már leadhatod a rendelést.";
+    frissitAuthNav();
+  } catch (error) {
+    console.error(error);
+    hibaElem.textContent = "Hiba történt a bejelentkezés során.";
+  }
+}
 
 document.addEventListener("DOMContentLoaded", renderKosarTabla);

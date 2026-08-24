@@ -90,3 +90,42 @@ function mutasdToaster(uzenet) {
     setTimeout(() => { toaster.style.display = "none"; }, 600);
   }, 3000);
 }
+
+const AUTH_API_BASE = "https://localhost:7249";
+
+async function frissitAuthNav() {
+  const navElem = document.getElementById("auth-nav-item");
+  if (!navElem) return;
+
+  const cachedAllapot = localStorage.getItem("bejelentkezve");
+  if (cachedAllapot === "igen") {
+    navElem.innerHTML = `<a class="nav-link" href="Admin.html">Fiókom</a>`;
+  }
+
+  try {
+    const response = await fetch(`${AUTH_API_BASE}/Auth/me`, {
+      method: "GET",
+      credentials: "include"
+    });
+
+    if (!response.ok) {
+      navElem.innerHTML = `<a class="nav-link" href="Admin.html">Bejelentkezés</a>`;
+      localStorage.setItem("bejelentkezve", "nem");
+    } else {
+      navElem.innerHTML = `<a class="nav-link" href="Admin.html">Fiókom</a>`;
+      localStorage.setItem("bejelentkezve", "igen");
+    }
+  } catch (error) {
+    console.error(error);
+  }
+}
+
+async function kijelentkezesNavrol() {
+  await fetch(`${AUTH_API_BASE}/Auth/logout`, {
+    method: "POST",
+    credentials: "include"
+  });
+  window.location.reload();
+}
+
+document.addEventListener("DOMContentLoaded", frissitAuthNav);

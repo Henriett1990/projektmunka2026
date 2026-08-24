@@ -274,6 +274,11 @@ p{
     background-color: #c85a30;
 }
 
+.btn-kosarba:focus {
+    outline: none;
+    box-shadow: 0 0 0 2px rgba(194, 67, 20, 0.973);
+}
+
 
 .termek-reszletek-box {
     background-color: #fdf6ee;
@@ -348,8 +353,9 @@ p{
 }
 
 .navbar-nav .nav-link {
-    padding-left: 8px;
-    padding-right: 8px;
+    font-family: 'Poppins', sans-serif;
+    font-weight: 500;
+    font-size: 1.1rem;
 }
 
 .navbar-nav {
@@ -387,4 +393,88 @@ button {
 .navbar-nav .nav-link {
     font-family: 'Poppins', sans-serif;
     font-weight: 500;
+}
+
+.admin-alcim {
+    font-size: 1.2rem;
+    padding: 10px 5px;
+}
+
+.szerkeszt-gomb {
+    background-color: #d97a4a;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    padding: 6px 14px;
+    font-weight: bold;
+    cursor: pointer;
+    margin-right: 6px;
+}
+
+.szerkeszt-gomb:hover {
+    background-color: #c25a30;
+}
+
+.kosar-tablazat td:last-child {
+    display: flex;
+    gap: 8px;
+}
+
+.szerkeszt-gomb,
+.kosar-torles-gomb {
+    min-width: 80px;
+    text-align: center;
+}
+
+.gomb-semleges {
+    background-color: #a68a7a;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    padding: 10px 16px;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+.gomb-semleges:hover {
+    background-color: #8a7060;
+}
+
+.gomb-vazlatos {
+    background-color: white;
+    color: #d97a4a;
+    border: 2px solid #d97a4a;
+    border-radius: 8px;
+    padding: 8px 16px;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+.gomb-vazlatos:hover {
+    background-color: #fdf1e8;
+}
+
+.gomb-vazlatos:focus {
+    outline: none;
+    box-shadow: 0 0 0 3px rgba(217, 122, 74, 0.3);
+}
+
+.gomb-semleges:focus {
+    outline: none;
+    box-shadow: 0 0 0 3px rgba(166, 138, 122, 0.4);
+}
+
+.szerkeszt-gomb:focus {
+    outline: none;
+    box-shadow: 0 0 0 3px rgba(217, 122, 74, 0.4);
+}
+
+.kosar-torles-gomb:focus {
+    outline: none;
+    box-shadow: 0 0 0 3px rgba(166, 138, 122, 0.4);
+}
+
+.rendeles-uzenet-szoveg {
+    font-size: 1.15rem;
+    margin-bottom: 10px;
 }

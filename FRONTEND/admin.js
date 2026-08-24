@@ -22,6 +22,7 @@ async function checkAuthStatus() {
   } catch (error) {
     console.error(error);
     showLoginPanel();
+    frissitAuthNav();
   }
 }
 
@@ -99,8 +100,8 @@ function renderTermekekTabla() {
       <td>${termek.price}</td>
       <td>${termek.stock}</td>
       <td>
-        <button class="btn btn-sm btn-primary" onclick="fillFormForEdit(${termek.id})">Szerkeszt</button>
-        <button class="btn btn-sm btn-danger" onclick="handleDeleteProduct(${termek.id})">Törlés</button>
+        <button class="szerkeszt-gomb" onclick="fillFormForEdit(${termek.id})">Szerkeszt</button>
+        <button class="kosar-torles-gomb" onclick="handleDeleteProduct(${termek.id})">Törlés</button>
       </td>
     `;
     tbody.appendChild(tr);
@@ -250,3 +251,57 @@ async function handleRegister() {
     hibaElem.textContent = "Hiba történt a regisztráció során.";
   }
 }
+
+async function handleAddAsNew() {
+  const uzenetElem = document.getElementById("termek-uzenet");
+
+  const termekAdat = {
+    category: document.getElementById("termek-category").value,
+    name: document.getElementById("termek-name").value,
+    unit: document.getElementById("termek-unit").value,
+    price: parseInt(document.getElementById("termek-price").value),
+    description: document.getElementById("termek-description").value,
+    image: document.getElementById("termek-image").value || null,
+    stock: parseInt(document.getElementById("termek-stock").value)
+  };
+
+  const egyezoTermek = termekekCache.find(t =>
+    t.category === termekAdat.category &&
+    t.name === termekAdat.name &&
+    t.unit === termekAdat.unit &&
+    t.price === termekAdat.price &&
+    t.description === termekAdat.description &&
+    (t.image || null) === termekAdat.image &&
+    t.stock === termekAdat.stock
+  );
+
+  if (egyezoTermek) {
+    const megerosit = confirm(`Ezek az adatok megegyeznek egy másik termék ("${egyezoTermek.name}") adataival. Biztosan hozzá akarod adni új termékként?`);
+    if (!megerosit) return;
+  }
+
+  try {
+    const response = await fetch(`${API_BASE}/Product`, {
+      method: "POST",
+      credentials: "include",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(termekAdat)
+    });
+
+    if (!response.ok) {
+      uzenetElem.style.color = "red";
+      uzenetElem.textContent = "Hiba történt a mentés során.";
+      return;
+    }
+
+    uzenetElem.style.color = "green";
+    uzenetElem.textContent = "Termék sikeresen hozzáadva!";
+    resetForm();
+    loadTermekekAdmin();
+  } catch (error) {
+    console.error(error);
+    uzenetElem.style.color = "red";
+    uzenetElem.textContent = "Hiba történt a mentés során.";
+  }
+}
+
