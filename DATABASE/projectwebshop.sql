@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Gép: 127.0.0.1:3306
--- Létrehozás ideje: 2026. Aug 13. 14:16
+-- Létrehozás ideje: 2026. Aug 28. 15:16
 -- Kiszolgáló verziója: 8.4.7
 -- PHP verzió: 8.3.28
 
@@ -21,6 +21,25 @@ SET time_zone = "+00:00";
 -- Adatbázis: `projectwebshop`
 --
 
+-- --------------------------------------------------------
+
+--
+-- Tábla szerkezet ehhez a táblához `orderitems`
+--
+
+DROP TABLE IF EXISTS `orderitems`;
+CREATE TABLE IF NOT EXISTS `orderitems` (
+  `id` int NOT NULL AUTO_INCREMENT,
+  `order_id` int NOT NULL,
+  `product_id` int DEFAULT NULL,
+  `product_name` varchar(150) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `unit_price` int NOT NULL,
+  `quantity` int NOT NULL,
+  PRIMARY KEY (`id`),
+  KEY `order_id` (`order_id`),
+  KEY `product_id` (`product_id`)
+) ENGINE=InnoDB AUTO_INCREMENT=47 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
 --
 -- A tábla adatainak kiíratása `orderitems`
 --
@@ -30,15 +49,60 @@ INSERT INTO `orderitems` (`id`, `order_id`, `product_id`, `product_name`, `unit_
 (2, 1, 1, 'Kecsketejes krém', 1900, 2),
 (3, 1, 3, 'Kollagénes ránctalanító krém', 1900, 1),
 (4, 1, 10, 'HŰSÍTŐ testbalzsam természetes kenderolajjal', 3500, 1),
-(5, 2, 2, 'Vadgesztenyés krém', 1900, 3),
-(6, 2, 3, 'Kollagénes ránctalanító krém', 1900, 1),
-(7, 2, 11, 'Testbalzsam természetes kenderolajjal 5%', 3500, 1),
-(8, 2, 15, 'Borz balzsam', 2500, 1),
-(9, 2, 14, 'Kender + Probiotics Balzsam - nagyon száraz és viszkető bőr ápolására', 2500, 1),
 (10, 3, 3, 'Kollagénes ránctalanító krém', 1900, 5),
 (11, 3, 7, 'Csigás krém', 1900, 1),
 (12, 3, 8, 'Körömvirágos krém', 1900, 1),
-(13, 3, 9, 'Ginzenges krém', 1900, 1);
+(13, 3, 9, 'Ginzenges krém', 1900, 1),
+(14, 4, 4, 'Kurkumás krém', 1900, 1),
+(15, 4, 1, 'Kecsketejes krém', 1900, 3),
+(16, 4, 3, 'Kollagénes ránctalanító krém', 1900, 3),
+(17, 5, 1, 'Kecsketejes krém', 1900, 1),
+(18, 5, 2, 'Vadgesztenyés krém', 1900, 1),
+(19, 5, 3, 'Kollagénes ránctalanító krém', 1900, 1),
+(20, 5, 4, 'Kurkumás krém', 1900, 1),
+(21, 5, 5, 'Fenyőrügyes krém', 1900, 1),
+(22, 5, 6, 'Orchideás-kollagénes krém', 1900, 1),
+(23, 6, 4, 'Kurkumás krém', 1900, 1),
+(24, 6, 5, 'Fenyőrügyes krém', 1900, 1),
+(25, 6, 6, 'Orchideás-kollagénes krém', 1900, 1),
+(26, 6, 3, 'Kollagénes ránctalanító krém', 1900, 1),
+(27, 6, 2, 'Vadgesztenyés krém', 1900, 1),
+(28, 6, 1, 'Kecsketejes krém', 1900, 2),
+(29, 7, 1, 'Kecsketejes krém', 1900, 3),
+(30, 7, 2, 'Vadgesztenyés krém', 1900, 2),
+(31, 7, 3, 'Kollagénes ránctalanító krém', 1900, 2),
+(32, 8, 1, 'Kecsketejes krém', 1900, 1),
+(33, 8, 2, 'Vadgesztenyés krém', 1900, 1),
+(34, 8, 3, 'Kollagénes ránctalanító krém', 1900, 1),
+(35, 9, 1, 'Kecsketejes krém', 1900, 2),
+(36, 9, 2, 'Vadgesztenyés krém', 1900, 2),
+(37, 9, 3, 'Kollagénes ránctalanító krém', 1900, 2),
+(38, 9, 5, 'Fenyőrügyes krém', 1900, 2),
+(39, 9, 4, 'Kurkumás krém', 1900, 2),
+(40, 9, 6, 'Orchideás-kollagénes krém', 1900, 2),
+(41, 10, 1, 'Kecsketejes krém', 1900, 2),
+(42, 10, 2, 'Vadgesztenyés krém', 1900, 2),
+(43, 10, 3, 'Kollagénes ránctalanító krém', 1900, 2),
+(44, 10, 5, 'Fenyőrügyes krém', 1900, 2),
+(45, 10, 4, 'Kurkumás krém', 1900, 2),
+(46, 10, 6, 'Orchideás-kollagénes krém', 1900, 2);
+
+-- --------------------------------------------------------
+
+--
+-- Tábla szerkezet ehhez a táblához `orders`
+--
+
+DROP TABLE IF EXISTS `orders`;
+CREATE TABLE IF NOT EXISTS `orders` (
+  `id` int NOT NULL AUTO_INCREMENT,
+  `user_id` int NOT NULL,
+  `total_price` int NOT NULL,
+  `status` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT 'Új',
+  `created_at` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  PRIMARY KEY (`id`),
+  KEY `user_id` (`user_id`)
+) ENGINE=InnoDB AUTO_INCREMENT=11 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 --
 -- A tábla adatainak kiíratása `orders`
@@ -46,8 +110,34 @@ INSERT INTO `orderitems` (`id`, `order_id`, `product_id`, `product_name`, `unit_
 
 INSERT INTO `orders` (`id`, `user_id`, `total_price`, `status`, `created_at`) VALUES
 (1, 3, 11100, 'Új', '2026-07-31 17:56:11'),
-(2, 4, 16100, 'Új', '2026-07-31 22:27:24'),
-(3, 3, 15200, 'Új', '2026-07-31 23:47:42');
+(3, 3, 15200, 'Új', '2026-07-31 23:47:42'),
+(4, 2, 13300, 'Új', '2026-08-23 21:06:52'),
+(5, 2, 11400, 'Új', '2026-08-23 21:12:35'),
+(6, 2, 13300, 'Új', '2026-08-23 21:26:45'),
+(7, 2, 13300, 'Új', '2026-08-23 21:31:28'),
+(8, 2, 5700, 'Új', '2026-08-23 21:46:07'),
+(9, 1, 22800, 'Új', '2026-08-28 17:12:12'),
+(10, 1, 22800, 'Új', '2026-08-28 17:12:19');
+
+-- --------------------------------------------------------
+
+--
+-- Tábla szerkezet ehhez a táblához `products`
+--
+
+DROP TABLE IF EXISTS `products`;
+CREATE TABLE IF NOT EXISTS `products` (
+  `id` int NOT NULL AUTO_INCREMENT,
+  `category` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_hungarian_ci DEFAULT NULL,
+  `name` varchar(150) CHARACTER SET utf8mb4 COLLATE utf8mb4_hungarian_ci NOT NULL,
+  `unit` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_hungarian_ci NOT NULL,
+  `price` int NOT NULL,
+  `description` text CHARACTER SET utf8mb4 COLLATE utf8mb4_hungarian_ci,
+  `image` varchar(200) CHARACTER SET utf8mb4 COLLATE utf8mb4_hungarian_ci DEFAULT NULL,
+  `stock` int NOT NULL DEFAULT '0',
+  `created_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=23 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_hungarian_ci;
 
 --
 -- A tábla adatainak kiíratása `products`
@@ -74,6 +164,26 @@ INSERT INTO `products` (`id`, `category`, `name`, `unit`, `price`, `description`
 (18, 'Egyéb', 'Ajakápoló balzsam aloe verával', '4,5 g', 800, 'Az aloe vera kiválóan alkalmas a száraz, kicserepesedett ajkak ápolására. Gyulladáscsökkentő, hidratáló és hűsítő hatásának köszönhetően elősegíti a berepedezett bőr regenerációját.', 'KEPEK/18_Ajakápoló védő rúzs aloe verával.jpg', 0, '2026-07-10 17:04:32'),
 (19, 'Kender', 'Kenderolaj 100%', '30 ml', 2500, '100 % kenderolaj - kendermag (Cannabis Sativa) préselésével nyerik. A tiszta olaj önmagában természetes kozmetikum lehet a test- és \nhajápoláshoz. Ideális kiegészítő a késztermékek gazdagításához. A kenderolaj értékes tulajdonságai közvetlenül annak összetételéből adódnak. Csaknem 80 %-ban esszenciális zsírsavakból, Omega 3 és Omega 6 zsírsavakból áll. Az olaj A-, E- és K-vitamin, valamint B-vitaminok, ásványi anyagok (kalcium, magnéziuk, cink és foszfor), aminosavak és fitoszterolok gazdag forrása. A rengeteg hasznos összetevő a kenderolajat multifunkcionális termékké teszi a test és a haj mindennapi ápolásában. A kenderolaj főbb tulajdonságai:\n• Regeneráló hatás és az öregedés korai jeleinek ellensúlyozása.\n• Hidratáló hatás és a bőr rugalmasságának javítás. \n• A bőr külső tényezőkkel szembeni ellenállóképességének javítása (szél, fagy, napsütés).\n• A bőrgyulladás enyhítése.\n• A bőrfelület puhítása és simítása.\n• Az arc faggyúkiválasztásának szabályozása.\n• A haj töredezettségének csökkentése.\n•  A fejbőr irritációjának csökkentése.\n• Visszaállítja a haj rugalmasságát és fényét, és stimulálja a haj növekedését.\n', 'KEPEK/19_100%-os kenderolaj 30ml.jpg', 0, '2026-07-10 17:04:32');
 
+-- --------------------------------------------------------
+
+--
+-- Tábla szerkezet ehhez a táblához `users`
+--
+
+DROP TABLE IF EXISTS `users`;
+CREATE TABLE IF NOT EXISTS `users` (
+  `id` int NOT NULL AUTO_INCREMENT,
+  `username` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_hungarian_ci DEFAULT NULL,
+  `email` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_hungarian_ci DEFAULT NULL,
+  `password` text CHARACTER SET utf8mb4 COLLATE utf8mb4_hungarian_ci,
+  `createdat` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
+  `updatedat` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
+  `IsAdmin` tinyint(1) NOT NULL DEFAULT '0',
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `username` (`username`),
+  UNIQUE KEY `email` (`email`)
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_hungarian_ci;
+
 --
 -- A tábla adatainak kiíratása `users`
 --
@@ -82,6 +192,23 @@ INSERT INTO `users` (`id`, `username`, `email`, `password`, `createdat`, `update
 (1, 'tesztelek', 'teszt@example.com', '$2a$11$fqIIPWyHKbFrHGWu70ezHOAJr.oawVhDCNEuABgapYN4debLlUcam', '2026-07-16 15:18:45', '2026-07-16 15:18:45', 1),
 (2, 'zsuzsa', 'teszt@teszt.com', '$2a$11$QGfBCjM/7m/55l3C73z/ju1QqSKChbwaNYi5XrkJgIJEk0AXgLhl.', '2026-07-17 16:11:17', '2026-07-17 16:11:17', 0),
 (3, 'Heni', '***REMOVED***', '$2a$11$.7VKS88v2iSg9oG/AOuHZ.OAfk3AIvvdQnTYqWCmB/ny0Vu1G/yvW', '2026-07-31 14:49:10', '2026-07-31 14:49:10', 0);
+
+--
+-- Megkötések a kiírt táblákhoz
+--
+
+--
+-- Megkötések a táblához `orderitems`
+--
+ALTER TABLE `orderitems`
+  ADD CONSTRAINT `orderitems_ibfk_1` FOREIGN KEY (`order_id`) REFERENCES `orders` (`id`) ON DELETE CASCADE,
+  ADD CONSTRAINT `orderitems_ibfk_2` FOREIGN KEY (`product_id`) REFERENCES `products` (`id`) ON DELETE SET NULL;
+
+--
+-- Megkötések a táblához `orders`
+--
+ALTER TABLE `orders`
+  ADD CONSTRAINT `orders_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`) ON DELETE CASCADE;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
