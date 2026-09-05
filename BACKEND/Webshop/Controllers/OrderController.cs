@@ -91,7 +91,16 @@ namespace Webshop.Controllers
             }
             catch (Exception ex)
             {
-                await transaction.RollbackAsync();
+                try
+                {
+                    await transaction.RollbackAsync();
+                }
+                catch
+                {
+                }
+
+                Console.WriteLine("HIBA A RENDELÉS SORÁN: " + ex.ToString());
+
                 return StatusCode(500, new { message = "Hiba történt a rendelés mentésekor.", error = ex.Message });
             }
         }
