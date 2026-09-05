@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Gép: 127.0.0.1:3306
--- Létrehozás ideje: 2026. Aug 28. 15:16
+-- Létrehozás ideje: 2026. Sze 05. 16:50
 -- Kiszolgáló verziója: 8.4.7
 -- PHP verzió: 8.3.28
 
@@ -31,14 +31,13 @@ DROP TABLE IF EXISTS `orderitems`;
 CREATE TABLE IF NOT EXISTS `orderitems` (
   `id` int NOT NULL AUTO_INCREMENT,
   `order_id` int NOT NULL,
-  `product_id` int DEFAULT NULL,
-  `product_name` varchar(150) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `product_id` int NOT NULL,
+  `product_name` varchar(150) COLLATE utf8mb4_unicode_ci NOT NULL,
   `unit_price` int NOT NULL,
   `quantity` int NOT NULL,
   PRIMARY KEY (`id`),
-  KEY `order_id` (`order_id`),
-  KEY `product_id` (`product_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=47 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+  KEY `order_id` (`order_id`)
+) ENGINE=MyISAM AUTO_INCREMENT=70 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 --
 -- A tábla adatainak kiíratása `orderitems`
@@ -49,43 +48,71 @@ INSERT INTO `orderitems` (`id`, `order_id`, `product_id`, `product_name`, `unit_
 (2, 1, 1, 'Kecsketejes krém', 1900, 2),
 (3, 1, 3, 'Kollagénes ránctalanító krém', 1900, 1),
 (4, 1, 10, 'HŰSÍTŐ testbalzsam természetes kenderolajjal', 3500, 1),
+(5, 2, 2, 'Vadgesztenyés krém', 1900, 3),
+(6, 2, 3, 'Kollagénes ránctalanító krém', 1900, 1),
+(7, 2, 11, 'Testbalzsam természetes kenderolajjal 5%', 3500, 1),
+(8, 2, 15, 'Borz balzsam', 2500, 1),
+(9, 2, 14, 'Kender + Probiotics Balzsam - nagyon száraz és viszkető bőr ápolására', 2500, 1),
 (10, 3, 3, 'Kollagénes ránctalanító krém', 1900, 5),
 (11, 3, 7, 'Csigás krém', 1900, 1),
 (12, 3, 8, 'Körömvirágos krém', 1900, 1),
 (13, 3, 9, 'Ginzenges krém', 1900, 1),
-(14, 4, 4, 'Kurkumás krém', 1900, 1),
-(15, 4, 1, 'Kecsketejes krém', 1900, 3),
-(16, 4, 3, 'Kollagénes ránctalanító krém', 1900, 3),
-(17, 5, 1, 'Kecsketejes krém', 1900, 1),
-(18, 5, 2, 'Vadgesztenyés krém', 1900, 1),
-(19, 5, 3, 'Kollagénes ránctalanító krém', 1900, 1),
-(20, 5, 4, 'Kurkumás krém', 1900, 1),
+(14, 4, 19, 'Kenderolaj 100%', 2500, 1),
+(15, 4, 16, 'Tigris balzsam', 2500, 1),
+(16, 4, 17, 'Ajakápoló balzsam kendermagolajjal és E-vitaminnal', 800, 1),
+(17, 4, 18, 'Ajakápoló balzsam aloe verával', 800, 1),
+(18, 4, 13, 'Krém karbamiddal és kenderolajjal - nagyon száraz bőrre', 1800, 1),
+(19, 4, 14, 'Kender + Probiotics Balzsam - nagyon száraz és viszkető bőr ápolására', 2500, 1),
+(20, 5, 2, 'Vadgesztenyés krém', 1900, 1),
 (21, 5, 5, 'Fenyőrügyes krém', 1900, 1),
 (22, 5, 6, 'Orchideás-kollagénes krém', 1900, 1),
-(23, 6, 4, 'Kurkumás krém', 1900, 1),
-(24, 6, 5, 'Fenyőrügyes krém', 1900, 1),
-(25, 6, 6, 'Orchideás-kollagénes krém', 1900, 1),
-(26, 6, 3, 'Kollagénes ránctalanító krém', 1900, 1),
-(27, 6, 2, 'Vadgesztenyés krém', 1900, 1),
-(28, 6, 1, 'Kecsketejes krém', 1900, 2),
-(29, 7, 1, 'Kecsketejes krém', 1900, 3),
-(30, 7, 2, 'Vadgesztenyés krém', 1900, 2),
-(31, 7, 3, 'Kollagénes ránctalanító krém', 1900, 2),
-(32, 8, 1, 'Kecsketejes krém', 1900, 1),
-(33, 8, 2, 'Vadgesztenyés krém', 1900, 1),
-(34, 8, 3, 'Kollagénes ránctalanító krém', 1900, 1),
-(35, 9, 1, 'Kecsketejes krém', 1900, 2),
-(36, 9, 2, 'Vadgesztenyés krém', 1900, 2),
-(37, 9, 3, 'Kollagénes ránctalanító krém', 1900, 2),
-(38, 9, 5, 'Fenyőrügyes krém', 1900, 2),
-(39, 9, 4, 'Kurkumás krém', 1900, 2),
-(40, 9, 6, 'Orchideás-kollagénes krém', 1900, 2),
-(41, 10, 1, 'Kecsketejes krém', 1900, 2),
-(42, 10, 2, 'Vadgesztenyés krém', 1900, 2),
-(43, 10, 3, 'Kollagénes ránctalanító krém', 1900, 2),
-(44, 10, 5, 'Fenyőrügyes krém', 1900, 2),
-(45, 10, 4, 'Kurkumás krém', 1900, 2),
-(46, 10, 6, 'Orchideás-kollagénes krém', 1900, 2);
+(23, 5, 10, 'HŰSÍTŐ testbalzsam természetes kenderolajjal', 3500, 1),
+(24, 5, 11, 'Testbalzsam természetes kenderolajjal 5%', 3500, 1),
+(25, 5, 12, 'Fekete nadálytő balzsam', 3500, 1),
+(26, 5, 14, 'Kender + Probiotics Balzsam - nagyon száraz és viszkető bőr ápolására', 2500, 1),
+(27, 6, 19, 'Kenderolaj 100%', 2500, 1),
+(28, 6, 11, 'Testbalzsam természetes kenderolajjal 5%', 3500, 3),
+(29, 6, 10, 'HŰSÍTŐ testbalzsam természetes kenderolajjal', 3500, 2),
+(30, 6, 2, 'Vadgesztenyés krém', 1900, 1),
+(31, 6, 12, 'Fekete nadálytő balzsam', 3500, 1),
+(32, 7, 2, 'Vadgesztenyés krém', 1900, 1),
+(33, 7, 3, 'Kollagénes ránctalanító krém', 1900, 1),
+(34, 7, 1, 'Kecsketejes krém', 1900, 1),
+(35, 7, 5, 'Fenyőrügyes krém', 1900, 1),
+(36, 7, 6, 'Orchideás-kollagénes krém', 1900, 1),
+(37, 7, 4, 'Kurkumás krém', 1900, 1),
+(38, 8, 2, 'Vadgesztenyés krém', 1900, 1),
+(39, 8, 3, 'Kollagénes ránctalanító krém', 1900, 1),
+(40, 8, 1, 'Kecsketejes krém', 1900, 1),
+(41, 8, 5, 'Fenyőrügyes krém', 1900, 1),
+(42, 8, 6, 'Orchideás-kollagénes krém', 1900, 1),
+(43, 8, 4, 'Kurkumás krém', 1900, 1),
+(44, 9, 2, 'Vadgesztenyés krém', 1900, 2),
+(45, 9, 3, 'Kollagénes ránctalanító krém', 1900, 2),
+(46, 9, 1, 'Kecsketejes krém', 1900, 1),
+(47, 9, 5, 'Fenyőrügyes krém', 1900, 2),
+(48, 9, 6, 'Orchideás-kollagénes krém', 1900, 2),
+(49, 9, 4, 'Kurkumás krém', 1900, 2),
+(50, 10, 2, 'Vadgesztenyés krém', 1900, 3),
+(51, 10, 3, 'Kollagénes ránctalanító krém', 1900, 3),
+(52, 10, 1, 'Kecsketejes krém', 1900, 1),
+(53, 10, 5, 'Fenyőrügyes krém', 1900, 3),
+(54, 10, 6, 'Orchideás-kollagénes krém', 1900, 3),
+(55, 10, 4, 'Kurkumás krém', 1900, 2),
+(56, 10, 11, 'Testbalzsam természetes kenderolajjal 5%', 3500, 1),
+(57, 10, 12, 'Fekete nadálytő balzsam', 3500, 1),
+(58, 10, 10, 'HŰSÍTŐ testbalzsam természetes kenderolajjal', 3500, 1),
+(59, 11, 2, 'Vadgesztenyés krém', 1900, 3),
+(60, 11, 3, 'Kollagénes ránctalanító krém', 1900, 3),
+(61, 11, 1, 'Kecsketejes krém', 1900, 1),
+(62, 11, 5, 'Fenyőrügyes krém', 1900, 3),
+(63, 11, 6, 'Orchideás-kollagénes krém', 1900, 3),
+(64, 11, 4, 'Kurkumás krém', 1900, 2),
+(65, 11, 11, 'Testbalzsam természetes kenderolajjal 5%', 3500, 2),
+(66, 11, 12, 'Fekete nadálytő balzsam', 3500, 2),
+(67, 11, 10, 'HŰSÍTŐ testbalzsam természetes kenderolajjal', 3500, 2),
+(68, 11, 14, 'Kender + Probiotics Balzsam - nagyon száraz és viszkető bőr ápolására', 2500, 1),
+(69, 11, 15, 'Borz balzsam', 2500, 1);
 
 -- --------------------------------------------------------
 
@@ -98,11 +125,10 @@ CREATE TABLE IF NOT EXISTS `orders` (
   `id` int NOT NULL AUTO_INCREMENT,
   `user_id` int NOT NULL,
   `total_price` int NOT NULL,
-  `status` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT 'Új',
+  `status` varchar(50) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT 'Új',
   `created_at` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  PRIMARY KEY (`id`),
-  KEY `user_id` (`user_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=11 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+  PRIMARY KEY (`id`)
+) ENGINE=MyISAM AUTO_INCREMENT=12 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 --
 -- A tábla adatainak kiíratása `orders`
@@ -110,14 +136,16 @@ CREATE TABLE IF NOT EXISTS `orders` (
 
 INSERT INTO `orders` (`id`, `user_id`, `total_price`, `status`, `created_at`) VALUES
 (1, 3, 11100, 'Új', '2026-07-31 17:56:11'),
+(2, 4, 16100, 'Új', '2026-07-31 22:27:24'),
 (3, 3, 15200, 'Új', '2026-07-31 23:47:42'),
-(4, 2, 13300, 'Új', '2026-08-23 21:06:52'),
-(5, 2, 11400, 'Új', '2026-08-23 21:12:35'),
-(6, 2, 13300, 'Új', '2026-08-23 21:26:45'),
-(7, 2, 13300, 'Új', '2026-08-23 21:31:28'),
-(8, 2, 5700, 'Új', '2026-08-23 21:46:07'),
-(9, 1, 22800, 'Új', '2026-08-28 17:12:12'),
-(10, 1, 22800, 'Új', '2026-08-28 17:12:19');
+(4, 3, 10900, 'Új', '2026-08-13 17:13:20'),
+(5, 3, 18700, 'Új', '2026-08-26 15:04:13'),
+(6, 3, 25400, 'Új', '2026-09-04 16:55:03'),
+(7, 3, 11400, 'Új', '2026-09-05 16:58:46'),
+(8, 3, 11400, 'Új', '2026-09-05 16:58:58'),
+(9, 3, 20900, 'Új', '2026-09-05 17:07:02'),
+(10, 3, 39000, 'Új', '2026-09-05 17:14:17'),
+(11, 3, 54500, 'Új', '2026-09-05 17:31:30');
 
 -- --------------------------------------------------------
 
@@ -137,7 +165,7 @@ CREATE TABLE IF NOT EXISTS `products` (
   `stock` int NOT NULL DEFAULT '0',
   `created_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=23 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_hungarian_ci;
+) ENGINE=MyISAM AUTO_INCREMENT=24 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_hungarian_ci;
 
 --
 -- A tábla adatainak kiíratása `products`
@@ -182,7 +210,7 @@ CREATE TABLE IF NOT EXISTS `users` (
   PRIMARY KEY (`id`),
   UNIQUE KEY `username` (`username`),
   UNIQUE KEY `email` (`email`)
-) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_hungarian_ci;
+) ENGINE=MyISAM AUTO_INCREMENT=5 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_hungarian_ci;
 
 --
 -- A tábla adatainak kiíratása `users`
@@ -191,24 +219,7 @@ CREATE TABLE IF NOT EXISTS `users` (
 INSERT INTO `users` (`id`, `username`, `email`, `password`, `createdat`, `updatedat`, `IsAdmin`) VALUES
 (1, 'tesztelek', 'teszt@example.com', '$2a$11$fqIIPWyHKbFrHGWu70ezHOAJr.oawVhDCNEuABgapYN4debLlUcam', '2026-07-16 15:18:45', '2026-07-16 15:18:45', 1),
 (2, 'zsuzsa', 'teszt@teszt.com', '$2a$11$QGfBCjM/7m/55l3C73z/ju1QqSKChbwaNYi5XrkJgIJEk0AXgLhl.', '2026-07-17 16:11:17', '2026-07-17 16:11:17', 0),
-(3, 'Heni', '***REMOVED***', '$2a$11$.7VKS88v2iSg9oG/AOuHZ.OAfk3AIvvdQnTYqWCmB/ny0Vu1G/yvW', '2026-07-31 14:49:10', '2026-07-31 14:49:10', 0);
-
---
--- Megkötések a kiírt táblákhoz
---
-
---
--- Megkötések a táblához `orderitems`
---
-ALTER TABLE `orderitems`
-  ADD CONSTRAINT `orderitems_ibfk_1` FOREIGN KEY (`order_id`) REFERENCES `orders` (`id`) ON DELETE CASCADE,
-  ADD CONSTRAINT `orderitems_ibfk_2` FOREIGN KEY (`product_id`) REFERENCES `products` (`id`) ON DELETE SET NULL;
-
---
--- Megkötések a táblához `orders`
---
-ALTER TABLE `orders`
-  ADD CONSTRAINT `orders_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`) ON DELETE CASCADE;
+(3, 'Heni', 'teszt2@example.com', '$2a$11$.7VKS88v2iSg9oG/AOuHZ.OAfk3AIvvdQnTYqWCmB/ny0Vu1G/yvW', '2026-07-31 14:49:10', '2026-07-31 14:49:10', 0);
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
