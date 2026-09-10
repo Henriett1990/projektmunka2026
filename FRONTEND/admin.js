@@ -148,6 +148,12 @@ async function handleSaveProduct() {
     stock: parseInt(document.getElementById("termek-stock").value)
   };
 
+  if (isNaN(termekAdat.price) || termekAdat.price < 0) {
+    uzenetElem.style.color = "red";
+    uzenetElem.textContent = "Az ár nem lehet negatív.";
+    return;
+  }
+
   const url = id ? `${API_BASE}/Product/${id}` : `${API_BASE}/Product`;
   const method = id ? "PUT" : "POST";
 
@@ -264,6 +270,12 @@ async function handleAddAsNew() {
     image: document.getElementById("termek-image").value || null,
     stock: parseInt(document.getElementById("termek-stock").value)
   };
+
+  if (isNaN(termekAdat.price) || termekAdat.price < 0) {
+    uzenetElem.style.color = "red";
+    uzenetElem.textContent = "Az ár nem lehet negatív.";
+    return;
+  }
 
   const egyezoTermek = termekekCache.find(t =>
     t.category === termekAdat.category &&

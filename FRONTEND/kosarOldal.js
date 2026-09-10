@@ -57,7 +57,10 @@ async function rendelesLeadasa() {
       document.getElementById("rendeles-gomb").style.display = "none";
       document.getElementById("bejelentkezes-gomb").style.display = "inline-block";
     } else {
-      uzenet.textContent = "Hiba történt a rendelés leadásakor.";
+      const hiba = await response.json().catch(() => null);
+      uzenet.textContent = hiba && hiba.message
+        ? hiba.message
+        : "Hiba történt a rendelés leadásakor.";
     }
   } catch (err) {
     uzenet.textContent = "Nem sikerült kapcsolódni a szerverhez.";

@@ -71,6 +71,9 @@ namespace Webshop.Controllers
         [HttpPost]
         public async Task<ActionResult> Create(ProductDto dto)
         {
+            if (dto.Price < 0)
+                return BadRequest(new { message = "Az ár nem lehet negatív." });
+
             using var connection = _connect.GetConnection();
 
             var cmd = new MySqlCommand(
@@ -94,6 +97,9 @@ namespace Webshop.Controllers
         [HttpPut("{id}")]
         public async Task<ActionResult> Update(int id, ProductDto dto)
         {
+            if (dto.Price < 0)
+                return BadRequest(new { message = "Az ár nem lehet negatív." });
+
             using var connection = _connect.GetConnection();
 
             var cmd = new MySqlCommand(

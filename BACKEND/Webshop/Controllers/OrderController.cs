@@ -37,6 +37,34 @@ namespace Webshop.Controllers
 
             try
             {
+                // --- Készlet ellenőrzése és zárolása ---
+                foreach (var item in dto.Items)
+                {
+                    var stockCmd = new MySqlCommand(
+                        "SELECT stock FROM products WHERE id = @productId FOR UPDATE",
+                        connection, (MySqlTransaction)transaction);
+                    stockCmd.Parameters.AddWithValue("@productId", item.Id);
+
+                    var stockResult = await stockCmd.ExecuteScalarAsync();
+
+                    if (stockResult == null)
+                    {
+                        await transaction.RollbackAsync();
+                        return BadRequest(new { message = $"A(z) '{item.Name}' termék már nem elérhető." });
+                    }
+
+                    int currentStock = Convert.ToInt32(stockResult);
+
+                    if (item.Quantity > currentStock)
+                    {
+                        await transaction.RollbackAsync();
+                        return BadRequest(new
+                        {
+                            message = $"'{item.Name}' termékből csak {currentStock} db van készleten, de {item.Quantity} db-ot próbáltál rendelni."
+                        });
+                    }
+                }
+
                 int totalPrice = dto.Items.Sum(i => i.Price * i.Quantity);
 
                 var orderCmd = new MySqlCommand(
@@ -58,7 +86,15 @@ namespace Webshop.Controllers
                     itemCmd.Parameters.AddWithValue("@name", item.Name);
                     itemCmd.Parameters.AddWithValue("@price", item.Price);
                     itemCmd.Parameters.AddWithValue("@qty", item.Quantity);
-                    await itemCmd.ExecuteNonQueryAsync();
+                    await itemCmd.ExecuteNonQueryAsync();                 
+
+                    // --- Készlet csökkentése ---
+                    var updateStockCmd = new MySqlCommand(
+                        "UPDATE products SET stock = stock - @qty WHERE id = @productId",
+                        connection, (MySqlTransaction)transaction);
+                    updateStockCmd.Parameters.AddWithValue("@qty", item.Quantity);
+                    updateStockCmd.Parameters.AddWithValue("@productId", item.Id);
+                    await updateStockCmd.ExecuteNonQueryAsync();
                 }
 
                 await transaction.CommitAsync();
