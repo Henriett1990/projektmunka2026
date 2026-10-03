@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Gép: 127.0.0.1:3306
--- Létrehozás ideje: 2026. Sze 15. 08:15
+-- Létrehozás ideje: 2026. Okt 03. 15:43
 -- Kiszolgáló verziója: 8.4.7
 -- PHP verzió: 8.3.28
 
@@ -31,13 +31,14 @@ DROP TABLE IF EXISTS `orderitems`;
 CREATE TABLE IF NOT EXISTS `orderitems` (
   `id` int NOT NULL AUTO_INCREMENT,
   `order_id` int NOT NULL,
-  `product_id` int NOT NULL,
+  `product_id` int DEFAULT NULL,
   `product_name` varchar(150) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
   `unit_price` int NOT NULL,
   `quantity` int NOT NULL,
   PRIMARY KEY (`id`),
-  KEY `order_id` (`order_id`)
-) ENGINE=MyISAM AUTO_INCREMENT=81 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+  KEY `order_id` (`order_id`),
+  KEY `fk_items_product` (`product_id`)
+) ENGINE=InnoDB AUTO_INCREMENT=104 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 --
 -- A tábla adatainak kiíratása `orderitems`
@@ -48,11 +49,6 @@ INSERT INTO `orderitems` (`id`, `order_id`, `product_id`, `product_name`, `unit_
 (2, 1, 1, 'Kecsketejes krém', 1900, 2),
 (3, 1, 3, 'Kollagénes ránctalanító krém', 1900, 1),
 (4, 1, 10, 'HŰSÍTŐ testbalzsam természetes kenderolajjal', 3500, 1),
-(5, 2, 2, 'Vadgesztenyés krém', 1900, 3),
-(6, 2, 3, 'Kollagénes ránctalanító krém', 1900, 1),
-(7, 2, 11, 'Testbalzsam természetes kenderolajjal 5%', 3500, 1),
-(8, 2, 15, 'Borz balzsam', 2500, 1),
-(9, 2, 14, 'Kender + Probiotics Balzsam - nagyon száraz és viszkető bőr ápolására', 2500, 1),
 (10, 3, 3, 'Kollagénes ránctalanító krém', 1900, 5),
 (11, 3, 7, 'Csigás krém', 1900, 1),
 (12, 3, 8, 'Körömvirágos krém', 1900, 1),
@@ -123,7 +119,30 @@ INSERT INTO `orderitems` (`id`, `order_id`, `product_id`, `product_name`, `unit_
 (77, 15, 2, 'Vadgesztenyés krém', 1900, 4),
 (78, 15, 1, 'Kecsketejes krém', 1900, 1),
 (79, 15, 3, 'Kollagénes ránctalanító krém', 1900, 1),
-(80, 15, 6, 'Orchideás-kollagénes krém', 1900, 1);
+(80, 15, 6, 'Orchideás-kollagénes krém', 1900, 1),
+(81, 16, 2, 'Vadgesztenyés krém', 1900, 3),
+(82, 16, 3, 'Kollagénes ránctalanító krém', 1900, 3),
+(83, 16, 4, 'Kurkumás krém', 1900, 3),
+(84, 16, 5, 'Fenyőrügyes krém', 1900, 1),
+(85, 16, 6, 'Orchideás-kollagénes krém', 1900, 1),
+(86, 16, 8, 'Körömvirágos krém', 1900, 1),
+(87, 16, 9, 'Ginzenges krém', 1900, 1),
+(88, 17, 11, 'Testbalzsam természetes kenderolajjal 5%', 3500, 1),
+(89, 17, 1, 'Kecsketejes krém', 1900, 4),
+(90, 17, 2, 'Vadgesztenyés krém', 1900, 4),
+(91, 17, 3, 'Kollagénes ránctalanító krém', 1900, 1),
+(92, 17, 4, 'Kurkumás krém', 1900, 1),
+(93, 18, 1, 'Kecsketejes krém', 1900, 196),
+(94, 18, 2, 'Vadgesztenyés krém', 1900, 100),
+(95, 18, 3, 'Kollagénes ránctalanító krém', 1900, 100),
+(96, 19, 2, 'Vadgesztenyés krém', 1900, 1),
+(97, 19, 5, 'Fenyőrügyes krém', 1900, 1),
+(98, 19, 6, 'Orchideás-kollagénes krém', 1900, 4),
+(99, 19, 8, 'Körömvirágos krém', 1900, 3),
+(100, 20, 2, 'Vadgesztenyés krém', 1900, 1),
+(101, 20, 5, 'Fenyőrügyes krém', 1900, 1),
+(102, 20, 6, 'Orchideás-kollagénes krém', 1900, 4),
+(103, 20, 8, 'Körömvirágos krém', 1900, 3);
 
 -- --------------------------------------------------------
 
@@ -138,8 +157,9 @@ CREATE TABLE IF NOT EXISTS `orders` (
   `total_price` int NOT NULL,
   `status` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT 'Új',
   `created_at` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  PRIMARY KEY (`id`)
-) ENGINE=MyISAM AUTO_INCREMENT=16 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+  PRIMARY KEY (`id`),
+  KEY `fk_orders_user` (`user_id`)
+) ENGINE=InnoDB AUTO_INCREMENT=21 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 --
 -- A tábla adatainak kiíratása `orders`
@@ -147,7 +167,6 @@ CREATE TABLE IF NOT EXISTS `orders` (
 
 INSERT INTO `orders` (`id`, `user_id`, `total_price`, `status`, `created_at`) VALUES
 (1, 3, 11100, 'Új', '2026-07-31 17:56:11'),
-(2, 4, 16100, 'Új', '2026-07-31 22:27:24'),
 (3, 3, 15200, 'Új', '2026-07-31 23:47:42'),
 (4, 3, 10900, 'Új', '2026-08-13 17:13:20'),
 (5, 3, 18700, 'Új', '2026-08-26 15:04:13'),
@@ -160,7 +179,12 @@ INSERT INTO `orders` (`id`, `user_id`, `total_price`, `status`, `created_at`) VA
 (12, 2, 7600, 'Új', '2026-09-10 16:23:39'),
 (13, 2, 13300, 'Új', '2026-09-10 17:05:24'),
 (14, 2, 13300, 'Új', '2026-09-10 17:05:28'),
-(15, 2, 13300, 'Új', '2026-09-10 19:33:14');
+(15, 2, 13300, 'Új', '2026-09-10 19:33:14'),
+(16, 2, 24700, 'Új', '2026-10-03 10:31:55'),
+(17, 2, 22500, 'Új', '2026-10-03 10:39:44'),
+(18, 2, 752400, 'Új', '2026-10-03 10:58:57'),
+(19, 2, 17100, 'Új', '2026-10-03 16:35:51'),
+(20, 2, 17100, 'Új', '2026-10-03 16:35:54');
 
 -- --------------------------------------------------------
 
@@ -180,7 +204,7 @@ CREATE TABLE IF NOT EXISTS `products` (
   `stock` int NOT NULL DEFAULT '0',
   `created_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM AUTO_INCREMENT=27 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_hungarian_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=32 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_hungarian_ci;
 
 --
 -- A tábla adatainak kiíratása `products`
@@ -225,7 +249,7 @@ CREATE TABLE IF NOT EXISTS `users` (
   PRIMARY KEY (`id`),
   UNIQUE KEY `username` (`username`),
   UNIQUE KEY `email` (`email`)
-) ENGINE=MyISAM AUTO_INCREMENT=5 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_hungarian_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_hungarian_ci;
 
 --
 -- A tábla adatainak kiíratása `users`
@@ -235,6 +259,23 @@ INSERT INTO `users` (`id`, `username`, `email`, `password`, `createdat`, `update
 (1, 'tesztelek', 'teszt@example.com', '$2a$11$fqIIPWyHKbFrHGWu70ezHOAJr.oawVhDCNEuABgapYN4debLlUcam', '2026-07-16 15:18:45', '2026-07-16 15:18:45', 1),
 (2, 'zsuzsa', 'teszt@teszt.com', '$2a$11$QGfBCjM/7m/55l3C73z/ju1QqSKChbwaNYi5XrkJgIJEk0AXgLhl.', '2026-07-17 16:11:17', '2026-07-17 16:11:17', 0),
 (3, 'Heni', 'teszt2@example.com', '$2a$11$.7VKS88v2iSg9oG/AOuHZ.OAfk3AIvvdQnTYqWCmB/ny0Vu1G/yvW', '2026-07-31 14:49:10', '2026-07-31 14:49:10', 0);
+
+--
+-- Megkötések a kiírt táblákhoz
+--
+
+--
+-- Megkötések a táblához `orderitems`
+--
+ALTER TABLE `orderitems`
+  ADD CONSTRAINT `fk_items_order` FOREIGN KEY (`order_id`) REFERENCES `orders` (`id`) ON DELETE CASCADE,
+  ADD CONSTRAINT `fk_items_product` FOREIGN KEY (`product_id`) REFERENCES `products` (`id`) ON DELETE SET NULL;
+
+--
+-- Megkötések a táblához `orders`
+--
+ALTER TABLE `orders`
+  ADD CONSTRAINT `fk_orders_user` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`) ON DELETE CASCADE;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
